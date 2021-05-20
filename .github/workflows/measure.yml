@@ -1,0 +1,35 @@
+name: measure
+
+on: [push, pull_request]
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        seed: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.6
+
+    - name: Install dependencies
+      run: pip3 install -r scripts/requirements.txt
+
+    - name: Prepare tools/
+      run: |
+        wget https://img.atcoder.jp/ahc001/ded8fd3366b4ff0b0d7d053f553cdb84.zip
+        unzip ded8fd3366b4ff0b0d7d053f553cdb84.zip
+
+    - name: Compile the code
+      run: |
+        g++ -std=c++17 -Wall -O2 -Iac-library main.cpp
+
+    - name: Measure the score
+      run: |
+        python3 scripts/measure.py --jobs 2 --count 100 --seed ${{ matrix.seed }}
