@@ -39,10 +39,12 @@ $ python3 scripts/visualize.py [-c COMMAND]
 
 ### GitHub に push するたび自動でテストする
 
-[scripts/measure.py](https://github.com/kmyk/marathon-kit/blob/main/scripts/measure.py) と [.github/workflows/measure.yml](https://github.com/kmyk/marathon-kit/blob/main/.github/workflows/measure.yml) をあなたのリポジトリに追加してください。
+まず、[scripts/measure.py](https://github.com/kmyk/marathon-kit/blob/main/scripts/measure.py) と [.github/workflows/measure.yml](https://github.com/kmyk/marathon-kit/blob/main/.github/workflows/measure.yml) をあなたのリポジトリに追加してください。
 リポジトリをまだ作っていない場合は、リポジトリのページ右上の [Use this template](https://github.com/kmyk/marathon-kit/generate) をクリックすることでも同じことができます。
 
-C++ 以外の言語を利用している人は `.github/workflows/` の中身を適切に修正する必要があります。
+その後、`.github/workflows/` の中身を適切に修正してください。
+`Prepare tools/` のステップの URL やファイル名を問題に合わせて更新する必要があります。
+C++ 以外の言語を利用している人は `Compile the code` のステップの修正も必要です。
 
 
 ## License
