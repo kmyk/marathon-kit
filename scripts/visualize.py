@@ -1,3 +1,18 @@
+"""
+scripts/visualize.py
+
+A script to visualize the internal state of solutions.
+"""
+
+__author__ = "Kimiyuki Onaka"
+__copyright__ = "Copyright (c) 2021 Kimiyuki Onaka"
+__credits__ = []
+__license__ = "MIT"
+__version__ = "1.1.0"
+__maintainer__ = "Kimiyuki Onaka"
+__email__ = "kimiyuki95@gmail.com"
+__status__ = "Production"
+
 import argparse
 import concurrent.futures
 import math
