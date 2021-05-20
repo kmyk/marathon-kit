@@ -1,17 +1,16 @@
-name: measure
+name: visualize
 
 on: [push, pull_request]
 
 jobs:
-  measure:
+  visualize:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        seed: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Install ffmpeg
+      run: sudo apt-get install ffmpeg
 
     - name: Set up Python
       uses: actions/setup-python@v1
@@ -58,8 +57,14 @@ jobs:
 
     - name: Compile the code
       run: |
-        g++ -std=c++17 -Wall -O2 -Iac-library main.cpp
+        g++ -std=c++17 -Wall -O2 -DDUMP_UPDATE -Iac-library main.cpp
 
-    - name: Measure the score
+    - name: visualize the solution
       run: |
-        python3 scripts/measure.py --jobs 2 --count 100 --seed ${{ matrix.seed }}
+        python3 scripts/visualize.py --jobs 2
+
+    - name: Archive the video
+      uses: actions/upload-artifact@v2
+      with:
+        name: video
+        path: vis/out.mp4
