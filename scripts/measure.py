@@ -6,7 +6,7 @@ A script to measure the efficacy of solutions rapidly.
 
 __author__ = "Kimiyuki Onaka"
 __copyright__ = "Copyright (c) 2021 Kimiyuki Onaka"
-__credits__ = []
+__credits__ = []  # type: List[str]
 __license__ = "MIT"
 __version__ = "1.2.0"
 __maintainer__ = "Kimiyuki Onaka"

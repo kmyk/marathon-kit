@@ -6,7 +6,7 @@ A script to visualize the internal state of solutions.
 
 __author__ = "Kimiyuki Onaka"
 __copyright__ = "Copyright (c) 2021 Kimiyuki Onaka"
-__credits__ = []
+__credits__ = []  # type: List[str]
 __license__ = "MIT"
 __version__ = "1.1.0"
 __maintainer__ = "Kimiyuki Onaka"
