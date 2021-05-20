@@ -57,7 +57,7 @@ jobs:
 
     - name: Compile the code
       run: |
-        g++ -std=c++17 -Wall -O2 -DDUMP_UPDATE -Iac-library main.cpp
+        g++ -std=c++17 -Wall -O2 -DLOCAL -DVISUALIZE -Iac-library main.cpp
 
     - name: visualize the solution
       run: |

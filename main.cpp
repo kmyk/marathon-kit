@@ -90,12 +90,12 @@ string solve(const int sy, const int sx, const array<array<int, N>, N>& tile, co
 
     vector<uint16_t> result = path_prev;
     int highscore = score_prev.back();
-#ifdef DUMP_UPDATE
+#ifdef VISUALIZE
     int highscore_index = 0;
     cerr << "-----BEGIN-----" << endl;
     cerr << convert_to_command_string(result) << endl;
     cerr << "-----END-----" << endl;
-#endif  // PRINT_UPDATE
+#endif  // VISUALIZE
 
     // simulated annealing
     int64_t iteration = 0;
@@ -180,9 +180,9 @@ string solve(const int sy, const int sx, const array<array<int, N>, N>& tile, co
         if (delta >= 0 or bernoulli_distribution(probability())(gen)) {
             // accept
             if (delta < 0) {
-#ifdef PRINT_UPDATE
+#ifdef VERBOSE
                 cerr << "decreasing move  (delta = " << delta << ", iteration = " << iteration << ")" << endl;
-#endif  // PRINT_UPDATE
+#endif  // VERBOSE
             }
 
             diff.insert(diff.end(), path_prev.begin() + tail_first, path_prev.begin() + tail_last);
@@ -202,14 +202,14 @@ string solve(const int sy, const int sx, const array<array<int, N>, N>& tile, co
             if (highscore < score_prev.back()) {
                 highscore = score_prev.back();
                 result = path_prev;
-#ifdef PRINT_UPDATE
+#ifdef VERBOSE
                 cerr << "highscore = " << highscore << "  (iteration = " << iteration << ")" << endl;
-#endif  // PRINT_UPDATE
-#ifdef DUMP_UPDATE
+#endif  // VERBOSE
+#ifdef VISUALIZE
                 cerr << "-----BEGIN-----" << endl;
                 cerr << convert_to_command_string(result) << endl;
                 cerr << "-----END-----" << endl;
-#endif  // PRINT_UPDATE
+#endif  // VISUALIZE
             }
         }
     }

@@ -58,7 +58,7 @@ jobs:
 
     - name: Compile the code
       run: |
-        g++ -std=c++17 -Wall -O2 -Iac-library main.cpp
+        g++ -std=c++17 -Wall -O2 -Iac-library -DLOCAL main.cpp
 
     - name: Measure the score
       run: |
