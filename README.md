@@ -47,6 +47,14 @@ $ python3 scripts/visualize.py [-c COMMAND]
 C++ 以外の言語を利用している人は `Compile the code` のステップの修正も必要です。
 
 
+## 注意
+
+AtCoder Heuristic Contest の問題で与えられる公式のビジュアライザの仕様が過去の問題から変化した場合は、それに応じて必要な箇所を適切に修正して利用してください。
+
+過去の問題の復習に利用するときも同様です。
+過去の問題については [Release 一覧](https://github.com/kmyk/marathon-kit/releases)から当時の状態のスクリプトを入手することもできます。
+
+
 ## License
 
 MIT License
