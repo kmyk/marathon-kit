@@ -86,6 +86,10 @@ def main() -> 'NoReturn':
 
     basicConfig(level=DEBUG)
 
+    if not pathlib.Path('tools').exists():
+        logger.error('tools/ directory is not found')
+        sys.exit(1)
+
     # gen
     input_path = pathlib.Path('in', '0000.txt')
     gen(seed=args.seed)

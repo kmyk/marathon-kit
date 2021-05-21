@@ -68,6 +68,10 @@ def main() -> 'NoReturn':
 
     basicConfig(level=DEBUG)
 
+    if not pathlib.Path('tools').exists():
+        logger.error('tools/ directory is not found')
+        sys.exit(1)
+
     # gen
     if args.same:
         seeds = [args.seed for i in range(args.count)]
