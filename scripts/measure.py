@@ -47,7 +47,8 @@ def run(*, command: str, input_path: pathlib.Path, output_path: pathlib.Path, se
 def vis(*, input_path: pathlib.Path, output_path: pathlib.Path, vis_path: pathlib.Path, seed: int) -> int:
     logger.info('running the visualizer for seed %d...', seed)
     try:
-        score_bytes = subprocess.check_output(['cargo', 'run', '--manifest-path', str(pathlib.Path('tools', 'Cargo.toml')), '--release', '--bin', 'vis', '--', str(input_path), str(output_path)])
+        command = [str((pathlib.Path.cwd() / 'tools' / 'target' / 'release' / 'vis').resolve()), str(input_path), str(output_path)]
+        score_bytes = subprocess.check_output(command)
     except subprocess.SubprocessError:
         logger.exception('failed for seed = %d', seed)
         return 0
@@ -90,6 +91,8 @@ def main() -> 'NoReturn':
     # vis
     pathlib.Path('vis').mkdir(exist_ok=True)
     scores: List[int] = []
+    command = ['cargo', 'build', '--manifest-path', str(pathlib.Path('tools', 'Cargo.toml')), '--release', '--bin', 'gen']
+    subprocess.check_output(command)
     for i, seed in enumerate(seeds):
         input_path = pathlib.Path('in', '%04d.txt' % i)
         output_path = pathlib.Path('out', '%04d.txt' % i)

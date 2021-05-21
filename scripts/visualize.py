@@ -114,7 +114,7 @@ def main() -> 'NoReturn':
         shutil.rmtree(pathlib.Path('vis'))
     pathlib.Path('vis').mkdir()
     logger.info('build the visualizer...')
-    command = ['cargo', 'build', '--manifest-path', str(pathlib.Path('tools', 'Cargo.toml')), '--release', '--bin', 'gen']
+    command = ['cargo', 'build', '--manifest-path', str(pathlib.Path('tools', 'Cargo.toml')), '--release', '--bin', 'vis']
     subprocess.check_output(command)
     score_futures: List[concurrent.futures.Future] = []
     with concurrent.futures.ProcessPoolExecutor(max_workers=args.jobs) as executor:
