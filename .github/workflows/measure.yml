@@ -8,13 +8,14 @@ jobs:
 
     strategy:
       matrix:
-        seed: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+        # seed: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+        seed: [0]
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Set up Python
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: 3.6
 
@@ -44,13 +45,13 @@ jobs:
       id: cache-tools
       with:
         path: tools/
-        key: ${{ runner.os }}-tools-
+        key: ${{ runner.os }}-tools-${{ hashFiles('*.zip') }}
 
     - name: Prepare tools/
       if: steps.cache-tools.outputs.cache-hit != 'true'
       run: |
-        wget https://img.atcoder.jp/ahc002/c993bb7f09d9f8857fc90951fc6af11d.zip
-        unzip c993bb7f09d9f8857fc90951fc6af11d.zip
+        wget -O tools.zip https://img.atcoder.jp/ahc002/c993bb7f09d9f8857fc90951fc6af11d.zip
+        unzip tools.zip
 
     - name: Build the visualizer
       run: |
@@ -62,4 +63,4 @@ jobs:
 
     - name: Measure the score
       run: |
-        python3 scripts/measure.py --jobs 2 --count 100 --seed ${{ matrix.seed }}
+        python3 scripts/measure.py --jobs 2 --count 200 --seed ${{ matrix.seed }}

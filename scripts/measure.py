@@ -31,7 +31,8 @@ def gen(*, seeds: List[int]) -> None:
     with open('seeds.txt', 'w') as fh:
         for seed in seeds:
             print(seed, file=fh)
-    subprocess.check_call(['cargo', 'run', '--manifest-path', str(pathlib.Path('tools', 'Cargo.toml')), '--release', '--bin', 'gen', 'seeds.txt'])
+    command = [str((pathlib.Path.cwd() / 'tools' / 'target' / 'release' / 'gen').resolve()), 'seeds.txt']
+    subprocess.check_call(command)
 
 
 def run(*, command: str, input_path: pathlib.Path, output_path: pathlib.Path, seed: int) -> None:
@@ -72,6 +73,12 @@ def main() -> 'NoReturn':
     if not pathlib.Path('tools').exists():
         logger.error('tools/ directory is not found')
         sys.exit(1)
+    command = ['cargo', 'build', '--manifest-path', str(pathlib.Path('tools', 'Cargo.toml')), '--release']
+    subprocess.check_output(command)
+
+    pathlib.Path('in').mkdir(exist_ok=True)
+    pathlib.Path('out').mkdir(exist_ok=True)
+    pathlib.Path('vis').mkdir(exist_ok=True)
 
     # gen
     if args.same:
@@ -81,7 +88,6 @@ def main() -> 'NoReturn':
     gen(seeds=seeds)
 
     # run
-    pathlib.Path('out').mkdir(exist_ok=True)
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.jobs) as executor:
         for i, seed in enumerate(seeds):
             input_path = pathlib.Path('in', '%04d.txt' % i)
@@ -89,10 +95,7 @@ def main() -> 'NoReturn':
             executor.submit(run, command=args.command, input_path=input_path, output_path=output_path, seed=seed)
 
     # vis
-    pathlib.Path('vis').mkdir(exist_ok=True)
     scores: List[int] = []
-    command = ['cargo', 'build', '--manifest-path', str(pathlib.Path('tools', 'Cargo.toml')), '--release', '--bin', 'gen']
-    subprocess.check_output(command)
     for i, seed in enumerate(seeds):
         input_path = pathlib.Path('in', '%04d.txt' % i)
         output_path = pathlib.Path('out', '%04d.txt' % i)
@@ -107,7 +110,7 @@ def main() -> 'NoReturn':
         logger.info('max = %s', max(scores))
         logger.info('standard deviation = %s', math.sqrt(sum([(score - average)**2 for score in scores]) / len(scores)))
     else:
-        logger.info('100 * average = %s', int(100 * average))
+        logger.info('average = %s', average)
 
     if min(scores) <= 0:
         sys.exit(1)

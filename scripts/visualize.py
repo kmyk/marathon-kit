@@ -36,7 +36,7 @@ def gen(*, seed: int) -> None:
     logger.info('running the generator...')
     with open('seeds.txt', 'w') as fh:
         print(seed, file=fh)
-    command = ['cargo', 'run', '--manifest-path', str(pathlib.Path('tools', 'Cargo.toml')), '--release', '--bin', 'gen', 'seeds.txt']
+    command = [str((pathlib.Path.cwd() / 'tools' / 'target' / 'release' / 'vis').resolve()), 'seeds.txt']
     subprocess.check_call(command)
 
 
@@ -89,6 +89,12 @@ def main() -> 'NoReturn':
     if not pathlib.Path('tools').exists():
         logger.error('tools/ directory is not found')
         sys.exit(1)
+    command = ['cargo', 'build', '--manifest-path', str(pathlib.Path('tools', 'Cargo.toml')), '--release']
+    subprocess.check_output(command)
+
+    pathlib.Path('in').mkdir(exist_ok=True)
+    pathlib.Path('out').mkdir(exist_ok=True)
+    pathlib.Path('vis').mkdir(exist_ok=True)
 
     # gen
     input_path = pathlib.Path('in', '0000.txt')
@@ -96,7 +102,6 @@ def main() -> 'NoReturn':
 
     # run
     logger.info('running the command...')
-    pathlib.Path('out').mkdir(exist_ok=True)
     output_path = pathlib.Path('out', 'err.txt')
     with open(input_path, 'rb') as fh1:
         with open(output_path, 'wb') as fh2:
@@ -112,9 +117,7 @@ def main() -> 'NoReturn':
     # vis
     if pathlib.Path('vis').exists():
         shutil.rmtree(pathlib.Path('vis'))
-    pathlib.Path('vis').mkdir()
     logger.info('build the visualizer...')
-    command = ['cargo', 'build', '--manifest-path', str(pathlib.Path('tools', 'Cargo.toml')), '--release', '--bin', 'vis']
     subprocess.check_output(command)
     score_futures: List[concurrent.futures.Future] = []
     with concurrent.futures.ProcessPoolExecutor(max_workers=args.jobs) as executor:
